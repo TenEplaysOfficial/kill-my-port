@@ -1,0 +1,48 @@
+{
+  "name": "kill-my-port",
+  "version": "1.0.0",
+  "description": "Easily kill processes running",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "kill-my-port": "index.js"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "funding": {
+    "type": "patreon",
+    "url": "https://www.patreon.com/teneplays"
+  },
+  "keywords": [
+    "kill",
+    "port",
+    "terminate",
+    "port",
+    "free",
+    "port",
+    "close",
+    "port",
+    "kill",
+    "process",
+    "npx",
+    "kill",
+    "port",
+    "conflict",
+    "nodejs",
+    "cli",
+    "tool",
+    "dev",
+    "tools"
+  ],
+  "homepage": "https://github.com/TenEplaysOfficial/kill-my-port#readme",
+  "bugs": {
+    "url": "https://github.com/TenEplaysOfficial/kill-my-port/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TenEplaysOfficial/kill-my-port.git"
+  },
+  "author": "Sriman",
+  "license": "MIT"
+}
