@@ -23,6 +23,7 @@ const killProcess = (port) => {
         return resolve();
       }
 
+
       const killCommand = isWindows
         ? `powershell -Command "Stop-Process -Id ${pid} -Force"`
         : `lsof -ti :${port} | xargs kill -9`;
