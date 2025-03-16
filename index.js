@@ -10,20 +10,15 @@ const rl = readline.createInterface({
 
 const isWindows = process.platform === "win32";
 
-const killProcess = (port) => {
+const killProcess = (port, isUserInput = false) => {
   const checkCommand = isWindows
     ? `netstat -ano | findstr :${port}`
     : `lsof -ti :${port}`;
 
   exec(checkCommand, (checkError, checkStdout) => {
-    if (checkError) {
-      console.error(`❌ Error checking port ${port}: ${checkError.message}`);
-      return askForPort();
-    }
-
-    if (!checkStdout) {
+    if (checkError || !checkStdout.trim()) {
       console.log(`⚠️ No process is running on port ${port}.`);
-      return askForPort();
+      return isUserInput ? askForPort() : exit();
     }
 
     rl.question(
@@ -41,11 +36,11 @@ const killProcess = (port) => {
             } else {
               console.log(`✅ Port ${port} has been freed.`);
             }
-            askForPort();
+            isUserInput ? askForPort() : exit();
           });
         } else {
           console.log("❌ Operation canceled.");
-          askForPort();
+          isUserInput ? askForPort() : exit();
         }
       }
     );
@@ -58,19 +53,13 @@ const listPorts = () => {
     : `lsof -i -P -n | grep LISTEN`;
 
   exec(listCommand, (error, stdout) => {
-    if (error) {
-      console.error(`❌ Error listing ports: ${error.message}`);
-      return askForPort();
-    }
-
-    if (!stdout) {
+    if (error || !stdout.trim()) {
       console.log("✅ No active ports found.");
-      return askForPort();
+      return exit();
     }
 
     console.log("🔍 Active ports:\n");
     console.log(stdout);
-
     askForPort();
   });
 };
@@ -78,16 +67,20 @@ const listPorts = () => {
 const askForPort = () => {
   rl.question("Enter a port to kill (or 'q' to exit): ", (port) => {
     if (port.toLowerCase() === "q") {
-      console.log("👋 Exiting...");
-      rl.close();
-      process.exit(0);
+      exit();
     } else if (!port) {
       console.log("⚠️ No port entered. Try again.");
       askForPort();
     } else {
-      killProcess(port);
+      killProcess(port, true);
     }
   });
+};
+
+const exit = () => {
+  console.log("👋 Exiting...");
+  rl.close();
+  process.exit(0);
 };
 
 const port = process.argv[2];
@@ -96,5 +89,5 @@ if (!port) {
   console.log("⚠️ No port provided. Searching for running ports...");
   listPorts();
 } else {
-  killProcess(port);
+  killProcess(port, false);
 }
