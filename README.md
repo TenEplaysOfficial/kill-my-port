@@ -32,13 +32,13 @@ kill-my-port 3000
 
 ## 🛠️ Usage
 
-### **1️⃣ Kill a Process on a Specific Port**
+### **1️⃣ Kill a Process on One or More Ports**
 
 ```sh
-kill-my-port 3000
+kill-my-port 3000 5000 8080
 ```
 
-This will **find and terminate** the process using port `3000`.
+This will **find and terminate** processes running on ports `3000`, `5000`, and `8080`.
 
 ### **2️⃣ Auto-Detect Running Ports and Choose One to Kill**
 
@@ -78,6 +78,7 @@ kill-my-port 8000
 
 ## 🔥 Features
 
+✔ **Kill multiple ports at once** (e.g., `kill-my-port 3000 5000 8080`)  
 ✔ **Cross-platform:** Works on **Windows, macOS, and Linux**  
 ✔ **Zero setup required:** Use instantly with `npx`  
 ✔ **Auto-detect active ports** if no port is provided  
@@ -92,7 +93,7 @@ Internally, `kill-my-port` executes OS-specific commands to find and terminate p
 
 | **OS**          | **Command Used**                                            |
 | --------------- | ----------------------------------------------------------- |
-| **Windows**     | `netstat -ano    \| findstr :PORT`+`taskkill /PID <PID> /F` |
+| **Windows**     | `Get-NetTCPConnection` + `Stop-Process -Id <PID> -Force`    |
 | **macOS/Linux** | `lsof -ti :PORT  \| xargs kill -9`                          |
 
 This ensures proper compatibility across different operating systems.
