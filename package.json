@@ -1,12 +1,16 @@
 {
   "name": "kill-my-port",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Easily kill processes running",
   "type": "module",
   "main": "index.js",
   "bin": {
     "kill-my-port": "index.js"
   },
+  "files": [
+    "index.js",
+    "README.md"
+  ],
   "scripts": {
     "start": "node index.js"
   },
@@ -18,22 +22,16 @@
     "kill",
     "port",
     "terminate",
-    "port",
-    "free",
-    "port",
-    "close",
-    "port",
-    "kill",
-    "process",
+    "free-port",
+    "close-port",
+    "kill-process",
     "npx",
-    "kill",
-    "port",
-    "conflict",
+    "port-conflict",
     "nodejs",
     "cli",
     "tool",
-    "dev",
-    "tools"
+    "developer-tools",
+    "dev-tools"
   ],
   "homepage": "https://github.com/TenEplaysOfficial/kill-my-port#readme",
   "bugs": {
