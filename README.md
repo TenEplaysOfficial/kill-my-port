@@ -90,10 +90,10 @@ kill-my-port 8000
 
 Internally, `kill-my-port` executes OS-specific commands to find and terminate processes:
 
-| **OS**          | **Command Used** |
-| --------------- | ---------------- | --------------------------------------- |
-| **Windows**     | `netstat -ano    | findstr :PORT`+`taskkill /PID <PID> /F` |
-| **macOS/Linux** | `lsof -ti :PORT  | xargs kill -9`                          |
+| **OS**          | **Command Used**                                            |
+| --------------- | ----------------------------------------------------------- |
+| **Windows**     | `netstat -ano    \| findstr :PORT`+`taskkill /PID <PID> /F` |
+| **macOS/Linux** | `lsof -ti :PORT  \| xargs kill -9`                          |
 
 This ensures proper compatibility across different operating systems.
 
