@@ -10,46 +10,47 @@ const rl = readline.createInterface({
 
 const isWindows = process.platform === "win32";
 
-const killProcess = (port, isUserInput = false) => {
-  const checkCommand = isWindows
-    ? `netstat -ano | findstr :${port}`
-    : `lsof -ti :${port}`;
+const killProcess = (port) => {
+  return new Promise((resolve) => {
+    const checkCommand = isWindows
+      ? `powershell -Command "(Get-NetTCPConnection -LocalPort ${port} -ErrorAction SilentlyContinue).OwningProcess"`
+      : `lsof -ti :${port}`;
 
-  exec(checkCommand, (checkError, checkStdout) => {
-    if (checkError || !checkStdout.trim()) {
-      console.log(`⚠️ No process is running on port ${port}.`);
-      return isUserInput ? askForPort() : exit();
-    }
-
-    rl.question(
-      `❗ Kill process running on port ${port}? (y/n): `,
-      (answer) => {
-        answer = answer.trim().toLowerCase() || "y";
-        if (answer === "y") {
-          const killCommand = isWindows
-            ? `for /f "tokens=5" %a in ('netstat -ano ^| findstr :${port}') do taskkill /PID %a /F`
-            : `lsof -ti :${port} | xargs kill -9`;
-
-          exec(killCommand, (error, stdout, stderr) => {
-            if (error) {
-              console.error(`❌ Error: ${stderr.trim() || error.message}`);
-            } else {
-              console.log(`✅ Port ${port} has been freed.`);
-            }
-            isUserInput ? askForPort() : exit();
-          });
-        } else {
-          console.log("❌ Operation canceled.");
-          isUserInput ? askForPort() : exit();
-        }
+    exec(checkCommand, (checkError, checkStdout) => {
+      const pid = checkStdout.trim();
+      if (checkError || !pid) {
+        console.log(`⚠️ No process is running on port ${port}.`);
+        return resolve();
       }
-    );
+
+      const killCommand = isWindows
+        ? `powershell -Command "Stop-Process -Id ${pid} -Force"`
+        : `lsof -ti :${port} | xargs kill -9`;
+
+      exec(killCommand, (error, _, stderr) => {
+        if (error && !stderr.includes("No such process")) {
+          console.error(
+            `❌ Error killing port ${port}: ${stderr.trim() || error.message}`
+          );
+        } else {
+          console.log(`✅ Port ${port} has been freed.`);
+        }
+        resolve();
+      });
+    });
   });
+};
+
+const killMultiplePorts = async (ports) => {
+  for (const port of ports) {
+    await killProcess(port);
+  }
+  exit();
 };
 
 const listPorts = () => {
   const listCommand = isWindows
-    ? `netstat -ano | findstr LISTEN`
+    ? `powershell -Command "Get-NetTCPConnection | Where-Object { $_.State -eq 'Listen' } | Select-Object LocalPort, OwningProcess"`
     : `lsof -i -P -n | grep LISTEN`;
 
   exec(listCommand, (error, stdout) => {
@@ -72,7 +73,7 @@ const askForPort = () => {
       console.log("⚠️ No port entered. Try again.");
       askForPort();
     } else {
-      killProcess(port, true);
+      killMultiplePorts([port]);
     }
   });
 };
@@ -83,11 +84,11 @@ const exit = () => {
   process.exit(0);
 };
 
-const port = process.argv[2];
+const ports = process.argv.slice(2).map(Number).filter(Boolean);
 
-if (!port) {
-  console.log("⚠️ No port provided. Searching for running ports...");
+if (ports.length === 0) {
+  console.log("⚠️ No ports provided. Searching for running ports...");
   listPorts();
 } else {
-  killProcess(port, false);
+  killMultiplePorts(ports);
 }
