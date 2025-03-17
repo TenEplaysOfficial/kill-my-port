@@ -1,8 +1,20 @@
+[![npm](https://img.shields.io/npm/v/kill-my-port?color=blue&label=npm)](https://www.npmjs.com/package/kill-my-port)
+[![npm downloads](https://img.shields.io/npm/dt/kill-my-port?color=orange&label=downloads)](https://www.npmjs.com/package/kill-my-port)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/kill-my-port?label=size)
+[![GitHub last commit](https://img.shields.io/github/last-commit/TenEplaysOfficial/kill-my-port)](https://github.com/TenEplaysOfficial/kill-my-port)
+![Maintenance](https://img.shields.io/maintenance/active/2025)
+![GitHub license](https://img.shields.io/github/license/TenEplaysOfficial/kill-my-port)
+[![GitHub issues](https://img.shields.io/github/issues/TenEplaysOfficial/kill-my-port)](https://github.com/TenEplaysOfficial/kill-my-port/issues)
+[![Contribute](https://img.shields.io/badge/Contribute-Open%20PRs-orange)](https://github.com/TenEplaysOfficial/kill-my-port/pulls)
+[![GitHub stars](https://img.shields.io/github/stars/TenEplaysOfficial/kill-my-port?style=social)](https://github.com/TenEplaysOfficial/kill-my-port)
+![GitHub forks](https://img.shields.io/github/forks/TenEplaysOfficial/kill-my-port?style=social)
+[![platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](#)
+![Node.js](https://img.shields.io/badge/Node.js-%3E%3D16-green?logo=node.js)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/TenEplaysOfficial/kill-my-port/publish.yml)  
+
 # `kill-my-port` – Kill Processes Running on a Port Instantly 🚀
 
 `kill-my-port` is a simple and efficient CLI tool that helps developers **quickly free up ports** by terminating processes running on them. It works across **Windows, macOS, and Linux** and provides an **interactive mode** if no port is specified.
-
----
 
 ## 📦 Installation
 
